@@ -13,9 +13,9 @@ const geistMono = Geist_Mono({
 });
 
 export const metadata: Metadata = {
-  title: "ReelEstate AI — Viral property reels in 60 seconds",
+  title: "Visteo — Cinematic listing videos in 60 seconds",
   description:
-    "Upload property photos. AI writes the script, records the voiceover, and renders a finished TikTok-ready reel.",
+    "Upload property photos. AI writes the script, records the voiceover, and renders a finished cinematic listing video.",
 };
 
 export default function RootLayout({
