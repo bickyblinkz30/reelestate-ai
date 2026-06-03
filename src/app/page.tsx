@@ -1,28 +1,6 @@
-'use client'
-import { useState, useEffect } from 'react'
-import { createClient } from '@/lib/supabase/client'
+import Link from 'next/link'
 
 export default function LandingPage() {
-  const [email, setEmail] = useState('')
-  const [status, setStatus] = useState<'idle' | 'loading' | 'done' | 'error'>('idle')
-  const [supabase, setSupabase] = useState<ReturnType<typeof createClient> | null>(null)
-
-  useEffect(() => {
-    setSupabase(createClient())
-  }, [])
-
-  async function handleWaitlist(e: React.FormEvent) {
-    e.preventDefault()
-    if (!email || !supabase) return
-    setStatus('loading')
-
-    const { error } = await supabase
-      .from('waitlist')
-      .insert({ email })
-
-    setStatus(error ? 'error' : 'done')
-  }
-
   return (
     <main className="min-h-screen bg-white text-slate-900 font-sans">
       {/* Nav */}
@@ -53,36 +31,14 @@ export default function LandingPage() {
           and renders a finished TikTok-ready reel. No editing skills needed.
         </p>
 
-        {status === 'done' ? (
-          <div className="text-[#10B981] font-semibold text-lg">
-            ✓ You&apos;re on the list! We&apos;ll be in touch soon.
-          </div>
-        ) : (
-          <form onSubmit={handleWaitlist}
-            className="flex gap-3 max-w-md mx-auto mb-4">
-            <input
-              type="email"
-              required
-              value={email}
-              onChange={e => setEmail(e.target.value)}
-              placeholder="your@email.com"
-              className="flex-1 px-4 py-3 border-2 border-slate-200 rounded-xl text-base
-                         focus:outline-none focus:border-[#1E3A8A] transition-colors"
-            />
-            <button
-              type="submit"
-              disabled={status === 'loading'}
-              className="bg-[#1E3A8A] text-white px-6 py-3 rounded-xl font-bold text-base
-                         hover:bg-[#2d55c8] transition-colors disabled:opacity-60 whitespace-nowrap">
-              {status === 'loading' ? 'Joining...' : 'Get early access'}
-            </button>
-          </form>
-        )}
-        {status === 'error' && (
-          <div className="text-red-500 font-medium text-sm mb-2">
-            Something went wrong, try again.
-          </div>
-        )}
+        <div className="flex justify-center mb-4">
+          <Link
+            href="/login"
+            className="bg-[#1E3A8A] text-white px-8 py-3 rounded-xl font-bold text-base
+                       hover:bg-[#2d55c8] transition-colors whitespace-nowrap">
+            Get early access
+          </Link>
+        </div>
         <p className="text-sm text-slate-400">
           <span className="text-[#10B981] font-semibold">Free trial included</span> — no credit card required
         </p>
@@ -167,6 +123,7 @@ export default function LandingPage() {
                 reels: '10 reels / mo',
                 features: ['AI script writer', 'Pro voiceovers', 'Auto captions', 'Vertical export'],
                 popular: false,
+                plan: 'starter',
               },
               {
                 name: 'Pro',
@@ -174,6 +131,7 @@ export default function LandingPage() {
                 reels: '40 reels / mo',
                 features: ['Everything in Starter', 'Priority processing', 'Custom voice cloning', 'Team collaboration'],
                 popular: true,
+                plan: 'pro',
               },
               {
                 name: 'Agency',
@@ -181,6 +139,7 @@ export default function LandingPage() {
                 reels: 'Unlimited reels',
                 features: ['Everything in Pro', 'White-label exports', 'API access', 'Dedicated support'],
                 popular: false,
+                plan: 'agency',
               },
             ].map((tier) => (
               <div key={tier.name}
@@ -209,14 +168,15 @@ export default function LandingPage() {
                     </li>
                   ))}
                 </ul>
-                <button
-                  className={`w-full py-3 rounded-xl font-bold text-sm transition-colors ${
+                <Link
+                  href={`/login?plan=${tier.plan}`}
+                  className={`w-full py-3 rounded-xl font-bold text-sm transition-colors text-center block ${
                     tier.popular
                       ? 'bg-white text-[#1E3A8A] hover:bg-slate-100'
                       : 'bg-[#1E3A8A] text-white hover:bg-[#2d55c8]'
                   }`}>
                   Get started
-                </button>
+                </Link>
               </div>
             ))}
           </div>
