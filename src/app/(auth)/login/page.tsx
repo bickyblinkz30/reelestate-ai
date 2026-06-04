@@ -28,20 +28,25 @@ export default function LoginPage() {
   }
 
   return (
-    <div className="min-h-screen flex items-center justify-center bg-[#0A0A0B]">
-      <div className="w-full max-w-sm px-4">
-        <div className="text-center mb-10">
-          <h1 className="text-3xl font-bold tracking-tight text-white mb-2">visteo</h1>
-          <p className="text-white/40 text-sm">Sign in to your account</p>
+    <div className="min-h-screen flex items-center justify-center bg-[#0a0a0a] px-4">
+      {/* Background glow */}
+      <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[500px] h-[500px]
+                      bg-[#c9a96e]/5 rounded-full blur-[100px] pointer-events-none" />
+
+      <div className="relative w-full max-w-sm animate-fade-in-up">
+        <div className="text-center mb-8">
+          <p className="text-2xl font-bold text-[#c9a96e] tracking-tight mb-1">ReelEstate AI</p>
+          <p className="text-[#666] text-sm">Sign in to your account</p>
         </div>
 
-        <div className="border border-white/8 rounded-2xl p-8 bg-white/[0.02]">
+        <div className="bg-[#111] border border-[#1f1f1f] rounded-2xl p-8">
           {sent ? (
-            <div className="text-center py-4">
-              <div className="text-4xl mb-4">📬</div>
+            <div className="text-center py-4 space-y-3">
+              <div className="text-4xl">📬</div>
               <p className="font-semibold text-white">Check your email</p>
-              <p className="text-white/40 text-sm mt-2">
-                We sent a magic link to <span className="text-white/70">{email}</span>
+              <p className="text-[#666] text-sm">
+                We sent a magic link to{' '}
+                <span className="text-[#c9a96e]">{email}</span>
               </p>
             </div>
           ) : (
@@ -52,15 +57,14 @@ export default function LoginPage() {
                 value={email}
                 onChange={e => setEmail(e.target.value)}
                 placeholder="your@email.com"
-                className="w-full px-4 py-3 rounded-xl text-sm text-white
-                           bg-white/5 border border-white/10
-                           placeholder:text-white/20
-                           focus:outline-none focus:border-white/30 transition-colors"
+                className="w-full px-4 py-3 rounded-xl bg-[#0a0a0a] border border-[#1f1f1f]
+                           text-white placeholder:text-[#444] text-sm
+                           focus:outline-none focus:border-[#c9a96e]/40 transition-colors"
               />
               <button
                 type="submit"
-                className="w-full bg-white text-black py-3 rounded-xl font-semibold text-sm
-                           hover:bg-white/90 transition-colors">
+                className="w-full bg-[#c9a96e] text-black py-3 rounded-xl font-semibold text-sm
+                           hover:bg-[#d4b87a] transition-colors">
                 Send magic link
               </button>
             </form>
