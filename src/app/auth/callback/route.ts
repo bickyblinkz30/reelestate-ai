@@ -23,9 +23,30 @@ export async function GET(request: NextRequest) {
         },
       }
     )
+
     const { error } = await supabase.auth.exchangeCodeForSession(code)
     if (!error) {
-      return NextResponse.redirect(`${origin}/dashboard`)
+      const { data: { user } } = await supabase.auth.getUser()
+
+      if (user) {
+        const { data: existing } = await supabase
+          .from('users')
+          .select('id')
+          .eq('id', user.id)
+          .maybeSingle()
+
+        if (!existing) {
+          await supabase.from('users').insert({
+            id: user.id,
+            email: user.email,
+            plan: 'free',
+            credits: 3,
+          })
+          return NextResponse.redirect(`${origin}/onboarding`)
+        }
+
+        return NextResponse.redirect(`${origin}/dashboard`)
+      }
     }
   }
 
